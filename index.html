@@ -677,28 +677,32 @@
             const calc = calculatePrice();
 
             // Menyusun Pesan WhatsApp
-            const text = `Halo Admin Boxside, saya ingin memesan kotak kado dengan detail berikut:%0A%0A` +
-                         `*--- DETAIL PRODUK ---*%0A` +
-                         `- Ukuran: ${calc.p} x ${calc.l} x ${calc.t} cm%0A` +
-                         `- Warna Pelapis: ${warna}%0A` +
-                         `- Jumlah: ${calc.qty} Pcs%0A` +
-                         `- Harga per pcs (Est): ${formatRupiah(calc.hargaPerPcs)}%0A%0A` +
-                         `*--- DATA PENGIRIMAN ---*%0A` +
-                         `- Nama: ${nama}%0A` +
-                         `- No HP: ${hp}%0A` +
-                         `- Alamat Lengkap: ${alamat}%0A` +
-                         `- Ekspedisi: ${ekspedisiText}%0A%0A` +
-                         `*--- ESTIMASI BIAYA ---*%0A` +
-                         `- Total Harga Barang: ${formatRupiah(calc.totalHargaBarang)}%0A` +
-                         `- Estimasi Berat: ${calc.beratTerpakaiKg} kg%0A` +
-                         `- Estimasi Ongkir: ${formatRupiah(calc.totalOngkir)}%0A` +
-                         `*GRAND TOTAL (Est): ${formatRupiah(calc.grandTotal)}*%0A%0A` +
-                         `Mohon info ketersediaan antrian dan rekening pembayarannya ya. Terima kasih!`;
+ const rawText = `Halo Admin Boxside, saya ingin memesan kotak kado dengan detail berikut:\n\n` +
+                        `*--- DETAIL PRODUK ---*\n` +
+                        `- Ukuran: ${calc.p} x ${calc.l} x ${calc.t} cm\n` +
+                        `- Warna Pelapis: ${warna}\n` +
+                        `- Jumlah: ${calc.qty} Pcs\n` +
+                        `- Harga per pcs (Est): ${formatRupiah(calc.hargaPerPcs)}\n\n` +
+                        `*--- DATA PENGIRIMAN ---*\n` +
+                        `- Nama: ${nama}\n` +
+                        `- No HP: ${hp}\n` +
+                        `- Kota Tujuan: ${kotaText}\n` +
+                        `- Alamat Lengkap: ${alamat}\n` +
+                        `- Ekspedisi: ${ekspedisiText}\n\n` +
+                        `*--- ESTIMASI BIAYA ---*\n` +
+                        `- Total Harga Barang: ${formatRupiah(calc.totalHargaBarang)}\n` +
+                        `- Estimasi Berat: ${calc.beratTerpakaiKg} kg\n` +
+                        `- Estimasi Ongkir: ${formatRupiah(calc.totalOngkir)}\n` +
+                        `*GRAND TOTAL (Est): ${formatRupiah(calc.grandTotal)}*\n\n` +
+                        `Mohon info ketersediaan antrian dan rekening pembayarannya ya. Terima kasih!`;
 
-            // Redirect ke WhatsApp
-            const waUrl = `https://wa.me/${WA_NUMBER}?text=${text}`;
-            window.open(waUrl, '_blank');
-        }
+        // Enkripsi total pesan agar aman dari semua karakter unik/khusus (seperti #, &, atau enter)
+        const encodedText = encodeURIComponent(rawText);
+
+        // Buka di tab baru menuju WhatsApp
+        const waUrl = `https://wa.me/${WA_NUMBER}?text=${encodedText}`;
+        window.open(waUrl, '_blank');
+    }
 
         // Initialize on load
         window.onload = () => {
